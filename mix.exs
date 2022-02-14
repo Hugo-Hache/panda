@@ -22,7 +22,9 @@ defmodule Panda.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:httpoison, "~> 1.8"},
+      {:jason, "~> 1.3"}
     ]
   end
 end
