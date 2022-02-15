@@ -1,4 +1,4 @@
-defmodule Example.RouterTest do
+defmodule Panda.RouterTest do
   use ExUnit.Case
   use Plug.Test
 

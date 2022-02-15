@@ -9,7 +9,7 @@ defmodule Panda.Request do
       @base_url
       |> URI.parse()
       |> Map.put(:path, path)
-      |> Map.put(:query, URI.encode_query(params))
+      |> Map.put(:query, Plug.Conn.Query.encode(params))
       |> URI.to_string()
 
     token = System.fetch_env!("PANDASCORE_API_KEY")

@@ -16,12 +16,19 @@ defmodule Panda do
           begin_at: "2022-02-14T15:00:00Z",
           id: 621480,
           name: "Lower Bracket Round 3 Match 1: HR vs V-Gaming",
-          scheduled_at: "2022-02-14T15:00:00Z"
+          scheduled_at: "2022-02-14T15:00:00Z",
+          draw: false,
+          winner_id: nil
+          opponents: [...]
         }
       ]
   """
   @spec upcoming_matches :: [Panda.Match.t()]
   def upcoming_matches do
     Panda.Match.upcoming()
+  end
+
+  def winning_probabilities_for_match(match_id) do
+    Panda.Match.retrieve(match_id) |> Panda.WinningProbability.Direct.compute()
   end
 end
