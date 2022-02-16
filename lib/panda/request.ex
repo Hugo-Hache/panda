@@ -4,6 +4,10 @@ defmodule Panda.Request do
 
   @base_url "https://api.pandascore.co"
 
+  defmodule NotFoundError do
+    defexception message: "Pandascore API returned a 404"
+  end
+
   def get(path, params \\ %{}) do
     uri_string =
       @base_url
@@ -18,6 +22,9 @@ defmodule Panda.Request do
     case HTTPoison.get(uri_string, headers) do
       {:ok, %{status_code: 200, body: body}} ->
         Jason.decode!(body, keys: :atoms)
+
+      {:ok, %{status_code: 404}} ->
+        raise NotFoundError
 
       {:error, %{reason: reason}} ->
         Logger.error("Error while fetching upcoming matches: #{reason}")

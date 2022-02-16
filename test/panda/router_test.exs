@@ -23,6 +23,6 @@ defmodule Panda.RouterTest do
 
     assert conn.state == :sent
     assert conn.status == 404
-    assert conn.resp_body == "Oops!"
+    assert conn.resp_body == "This route does not exist"
   end
 end
