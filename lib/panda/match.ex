@@ -32,16 +32,23 @@ defmodule Panda.Match do
     |> Enum.map(&from_json/1)
   end
 
-  @spec finished_between(opponent, opponent) :: [t]
-  def finished_between(%{opponent: %{id: first_id}, type: type}, %{opponent: %{id: second_id}}) do
+  @spec finished(opponent, map) :: [t]
+  def finished(%{opponent: %{id: first_id}, type: type}, filter \\ %{}) do
     resources =
       case type do
         "Team" -> "teams"
         "Player" -> "players"
       end
 
-    get("/#{resources}/#{first_id}/matches", %{filter: %{finished: true, opponent_id: second_id}})
+    get("/#{resources}/#{first_id}/matches", %{
+      filter: Map.merge(filter, %{finished: true})
+    })
     |> Enum.map(&from_json/1)
+  end
+
+  @spec finished_between(opponent, opponent) :: [t]
+  def finished_between(first_opponent, %{opponent: %{id: second_id}}) do
+    finished(first_opponent, %{opponent_id: second_id})
   end
 
   defp from_json(json), do: struct(Panda.Match, json)
