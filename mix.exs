@@ -24,7 +24,8 @@ defmodule Panda.MixProject do
     [
       {:plug_cowboy, "~> 2.5"},
       {:httpoison, "~> 1.8"},
-      {:jason, "~> 1.3"}
+      {:jason, "~> 1.3"},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 end

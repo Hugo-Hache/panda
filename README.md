@@ -1,21 +1,18 @@
 # Panda
 
-**TODO: Add description**
+Small client on the [Pandascore API](https://developers.pandascore.co/docs)
 
-## Installation
+## Usage
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `panda` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:panda, "~> 0.1.0"}
-  ]
-end
+```
+# PANDASCORE_API_KEY=<YOUR_KEY> iex -S mix
+iex > Panda.upcoming_matches
+iex > Panda.winning_probabilities_for_match(match_id)
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/panda>.
+Or start the server with `PANDASCORE_API_KEY=<YOUR_KEY> mix run --no-halt`.
 
+## Identified improvement area
+
+- Replace returns values `result | nil` by idiomatic `{:ok, result} | {:error, error_code}`
+- Replace `Panda.WinningProbability.uncomputable_message` by an idiomatic way to store and access wording (error tuple would be a bad place as code is a better practice)

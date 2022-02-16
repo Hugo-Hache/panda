@@ -29,16 +29,7 @@ defmodule Panda do
   end
 
   def winning_probabilities_for_match(match_id) do
-    match = Panda.Match.retrieve(match_id)
-
-    strategies = [Panda.WinningProbability.Direct, Panda.WinningProbability.Global]
-    sorry = "The track record of those teams is too scarce to compute winning probabilities"
-
-    Enum.reduce_while(strategies, sorry, fn strategy, default ->
-      case strategy.compute(match) do
-        nil -> {:cont, default}
-        winning_probabilities -> {:halt, winning_probabilities}
-      end
-    end)
+    Panda.WinningProbability.compute(match_id) ||
+      Panda.WinningProbability.uncomputable_message()
   end
 end

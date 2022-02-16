@@ -11,7 +11,17 @@ defmodule Panda.Router do
   end
 
   get "/matches/:id/winning_probabilities" do
-    send_resp(conn, 200, Panda.winning_probabilities_for_match(id) |> Jason.encode!())
+    case winning_probability().compute(id) do
+      nil ->
+        send_resp(
+          conn,
+          422,
+          %{error: winning_probability().uncomputable_message()} |> Jason.encode!()
+        )
+
+      winning_probability ->
+        send_resp(conn, 200, winning_probability |> Jason.encode!())
+    end
   end
 
   match _ do
@@ -24,5 +34,9 @@ defmodule Panda.Router do
       %Panda.Request.NotFoundError{} -> send_resp(conn, 404, "Record not found")
       _ -> send_resp(conn, 500, "Something went wrong")
     end
+  end
+
+  defp winning_probability do
+    Application.get_env(:panda, :winning_probability, Panda.WinningProbability)
   end
 end
