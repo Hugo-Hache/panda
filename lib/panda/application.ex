@@ -13,6 +13,7 @@ defmodule Panda.Application do
     ]
 
     Logger.info("Starting Panda server on port 8080 ...")
+    :ets.new(:winning_probability_cache, [:public, :protected, :named_table])
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

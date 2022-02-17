@@ -6,7 +6,7 @@ defmodule Panda.WinningProbability do
 
   @spec compute(integer) :: map | nil
   def compute(match_id) do
-    match = Panda.Match.retrieve(match_id)
+    match = retrieve_match(match_id)
 
     [Panda.WinningProbability.Direct, Panda.WinningProbability.Global]
     |> first_computable_strategy(match)
@@ -15,6 +15,17 @@ defmodule Panda.WinningProbability do
   @spec uncomputable_message :: String.t()
   def uncomputable_message,
     do: "The track record of those teams is too scarce to compute winning probabilities"
+
+  defp retrieve_match(match_id) do
+    case :ets.lookup(:winning_probability_cache, match_id) do
+      [] ->
+        Panda.Match.retrieve(match_id)
+        |> tap(&:ets.insert(:winning_probability_cache, {match_id, &1}))
+
+      [{_, match}] ->
+        match
+    end
+  end
 
   defp first_computable_strategy(strategies, match) do
     # serial is faster if direct resolves, ie opponents played enough against each other
