@@ -3,6 +3,7 @@ defmodule Panda.Router do
   use Plug.ErrorHandler
   require Jason
 
+  plug(Plug.Logger, log: :info)
   plug(:match)
   plug(:dispatch)
 

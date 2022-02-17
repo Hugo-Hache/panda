@@ -16,3 +16,4 @@ Or start the server with `PANDASCORE_API_KEY=<YOUR_KEY> mix run --no-halt`.
 
 - Replace returns values `result | nil` by idiomatic `{:ok, result} | {:error, error_code}`
 - Replace `Panda.WinningProbability.uncomputable_message` by an idiomatic way to store and access wording (error tuple would be a bad place as code is a better practice)
+- Find a better heuristic to decide between serial or parallel computations of winning probability strategies
