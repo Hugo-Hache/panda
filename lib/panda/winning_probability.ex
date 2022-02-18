@@ -19,7 +19,7 @@ defmodule Panda.WinningProbability do
   defp retrieve_match(match_id) do
     case :ets.lookup(:winning_probability_cache, match_id) do
       [] ->
-        Panda.Match.retrieve(match_id)
+        Panda.API.Match.retrieve(match_id)
         |> tap(&:ets.insert(:winning_probability_cache, {match_id, &1}))
 
       [{_, match}] ->

@@ -1,17 +1,11 @@
 defmodule Panda.WinningProbability.Global do
-  @spec compute(
-          Panda.Match.t(),
-          (Panda.Match.opponent() -> [Panda.Match.t()])
-        ) :: nil | %{String.t() => float}
-  def compute(
-        %Panda.Match{opponents: opponents},
-        finished \\ &Panda.Match.finished/1
-      ) do
+  @spec compute(Panda.Match.t()) :: nil | %{String.t() => float}
+  def compute(%Panda.Match{opponents: opponents}) do
     [%{opponent: %{name: first_name}}, %{opponent: %{name: second_name}}] = opponents
 
     opponents
     |> Enum.map(fn opponent ->
-      finished.(opponent)
+      api_match().finished(opponent)
       |> outcomes(opponent.opponent.id)
       |> probabilities
     end)
@@ -47,5 +41,9 @@ defmodule Panda.WinningProbability.Global do
         first_name => first_win / total,
         second_name => second_win / total
       }
+  end
+
+  defp api_match do
+    Application.get_env(:panda, :api_match, Panda.API.Match)
   end
 end

@@ -1,7 +1,10 @@
 defmodule Panda.WinningProbability.DirectTest do
   use ExUnit.Case
 
-  alias Panda.{Match, WinningProbability.Direct}
+  import Mox
+
+  alias Panda.Match
+  alias Panda.WinningProbability.Direct
 
   @match %Match{
     opponents: [
@@ -11,7 +14,8 @@ defmodule Panda.WinningProbability.DirectTest do
   }
 
   test "compute nominal probabibilities" do
-    finished_between = fn _first_opponent, _second_opponent ->
+    Panda.APIMock.Match
+    |> expect(:finished_between, fn _first_opponent, _second_opponent ->
       [
         %Match{winner_id: 24},
         %Match{winner_id: 24},
@@ -22,12 +26,15 @@ defmodule Panda.WinningProbability.DirectTest do
         %Match{winner_id: 42},
         %Match{winner_id: 42}
       ]
-    end
+    end)
 
-    assert Direct.compute(@match, finished_between) == %{"One team" => 0.375, "Team two" => 0.25}
+    assert Direct.compute(@match) == %{"One team" => 0.375, "Team two" => 0.25}
   end
 
   test "compute nil probabibilities when empty finished between" do
-    assert Direct.compute(@match, fn _first_opponent, _second_opponent -> [] end) == nil
+    Panda.APIMock.Match
+    |> expect(:finished_between, fn _first_opponent, _second_opponent -> [] end)
+
+    assert Direct.compute(@match) == nil
   end
 end

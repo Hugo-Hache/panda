@@ -1,18 +1,12 @@
 defmodule Panda.WinningProbability.Direct do
-  @spec compute(
-          Panda.Match.t(),
-          (Panda.Match.opponent(), Panda.Match.opponent() -> [Panda.Match.t()])
-        ) :: nil | %{String.t() => float}
-  def compute(
-        %Panda.Match{opponents: opponents},
-        finished_between \\ &Panda.Match.finished_between/2
-      ) do
+  @spec compute(Panda.Match.t()) :: nil | %{String.t() => float}
+  def compute(%Panda.Match{opponents: opponents}) do
     [first_opponent, second_opponent] = opponents
     %{id: first_id, name: first_name} = first_opponent.opponent
     %{id: second_id, name: second_name} = second_opponent.opponent
 
     probabilities =
-      finished_between.(first_opponent, second_opponent)
+      api_match().finished_between(first_opponent, second_opponent)
       |> outcomes(first_id, second_id)
       |> probabilities
 
@@ -40,5 +34,9 @@ defmodule Panda.WinningProbability.Direct do
   defp probabilities(%{first_win: first_win, draw: draw, second_win: second_win}) do
     total = first_win + draw + second_win
     %{first_win: first_win / total, draw: draw / total, second_win: second_win / total}
+  end
+
+  defp api_match do
+    Application.get_env(:panda, :api_match, Panda.API.Match)
   end
 end

@@ -1,4 +1,4 @@
-defmodule Panda.Request do
+defmodule Panda.API.Request do
   require Application
   require Logger
 

@@ -25,7 +25,7 @@ defmodule Panda do
   """
   @spec upcoming_matches :: [Panda.Match.t()]
   def upcoming_matches do
-    Panda.Match.upcoming()
+    Panda.API.Match.upcoming()
   end
 
   def winning_probabilities_for_match(match_id) do

@@ -32,7 +32,7 @@ defmodule Panda.Router do
   @impl Plug.ErrorHandler
   def handle_errors(conn, %{kind: _kind, reason: reason}) do
     case reason do
-      %Panda.Request.NotFoundError{} -> send_resp(conn, 404, "Record not found")
+      %Panda.API.Request.NotFoundError{} -> send_resp(conn, 404, "Record not found")
       _ -> send_resp(conn, 500, "Something went wrong")
     end
   end
