@@ -3,6 +3,7 @@ defmodule Panda.API.Match do
 
   alias Panda.Match
 
+  @callback retrieve(integer) :: Match.t()
   @callback finished(Match.opponent()) :: [Match.t()]
   @callback finished_between(Match.opponent(), Match.opponent()) :: [Match.t()]
 

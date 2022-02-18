@@ -1,10 +1,12 @@
 defmodule Panda.WinningProbability.GlobalTest do
   use ExUnit.Case
 
-  import Mox
-
   alias Panda.Match
   alias Panda.WinningProbability.Global
+
+  import Mox
+
+  setup :verify_on_exit!
 
   @match %Match{
     opponents: [

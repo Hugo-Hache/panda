@@ -1,10 +1,12 @@
 defmodule Panda.WinningProbability.DirectTest do
   use ExUnit.Case
 
-  import Mox
-
   alias Panda.Match
   alias Panda.WinningProbability.Direct
+
+  import Mox
+
+  setup :verify_on_exit!
 
   @match %Match{
     opponents: [
